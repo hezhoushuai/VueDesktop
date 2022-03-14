@@ -38,6 +38,7 @@
 
 <script>
 import { getList } from '@/api/table'
+import db from '@/db'
 
 export default {
   data() {
@@ -60,12 +61,20 @@ export default {
     this.fetchData()
   },
   methods: {
-    fetchData() {
+    async fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+      const allTableData = await db.testTable.toArray()
+      if(!allTableData.length) {
+        const { data } =await getList(this.listQuery)
+        this.list = data
+        data.forEach(item => {
+          db.testTable.put(item)
+        })
+      } else {
+        this.list = allTableData
+      }
+      
+      this.listLoading = false
     }
   }
 }

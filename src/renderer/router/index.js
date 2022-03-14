@@ -71,6 +71,18 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/fileReader',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'fileReader',
+        component: () => import('@/views/fileReader/index'),
+        meta: { title: 'fileReader', icon: 'form' }
+      }
+    ]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
